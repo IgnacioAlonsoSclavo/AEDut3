@@ -1,17 +1,15 @@
 package ucu.edu.aed.medible.medibles;
 
-
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import ucu.edu.aed.medible.lib.Medible;
 
-public class MedicionBuscarLinkedList extends Medible<List<String>> {
+public class MedicionBuscarArrayList extends Medible<List<String>> {
 
+    private final ArrayList<String> list;
 
-    private final LinkedList<String> list;
-
-    public MedicionBuscarLinkedList(LinkedList<String> list) {
+    public MedicionBuscarArrayList(ArrayList<String> list) {
         this.list = list;
     }
 
