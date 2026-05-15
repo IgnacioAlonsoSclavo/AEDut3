@@ -1,0 +1,102 @@
+1. Operación buscar palabra completa:
+Lenguaje natural:
+
+El método recibe una palabra y se inicializa un nodo auxiliar con el nodo actual this. Por cada carácter de la palabra, se verifica si existe un hijo con dicho carácter, en caso de que no exista, se devuelve nulo. Si existe, ese hijo pasa a ser el nodo actual. Al finalizar el recorrido, si el nodo actual es fin de palabra, se devuelve dicho nodo, sino se devuelve nulo.
+
+Precondiciones y Postcondiciones:
+
+Precondiciones:
+- Se debe ingresar una palabra, de tipo string.
+- La palabra no puede ser nula o vacia.
+- El Trie debe de existir
+
+Postcondiciones:
+-Se retorna nulo si algún carácter del camino no existe, o si la secuencia existe pero no es una palabra completa
+-Se retorna el nodo fin de palabra si la palabra existe completa en el Trie
+
+Pseudocodigo:
+
+Clase nodoTrie:
+
+NodoTrie<T> buscar (String unaPalabra){
+    nodoActual <- this
+    Para cada caracter car de unaPalabra hacer
+        unHijo <- nodoActual.obtenerHijo(car)
+        Si unHijo es nulo entonces
+            devolver nulo
+        Sino
+            nodoActual = unHijo
+        FinSi
+    FinPara
+    Si nodoActual.esFinDePalabra entonces
+        devolver nodoActual
+    Sino
+        devolver nulo
+    FinSi
+}
+
+Clase Trie:
+NodoTrie<T> buscar (String unaPalabra){
+    si unaPalabra != null{
+    devolver raiz.buscar(unaPalabra)}
+    sino devolver null;
+}
+
+La busqueda en Tries es de Orden:
+m = longitud de la palabra
+d = costo de obtener el hijo, que depende de la estructura utilizada.
+Si obtenerHijo tiene O(1) (Array o Hashmap) entonces la complejidad total tiene orden m.
+O(d*m)
+
+2. Obtener la lista de palabras por un prefijo dado:
+Lenguaje natural:
+El metodo recibe un prefijo de tipo String.
+Se busca el nodo que corresponde al último carácter del prefijo, si dicho nodo es nulo, se devuelve una lista vacia.
+En caso de que no sea nulo , se recorre recursivamente todos los subarboles a partir de ese nodo, añadiendo a la lista de todas las palabras que se encuentren completas.
+Finalmente se devuelve la lsita con todas las palabras compeltas.
+
+
+Precondiciones y Postcondiciones:
+
+Precondiciones:
+-El prefijo no puede ser nulo o vacio.
+
+
+Postcondiciones:
+-Se retorna una lista vacia si no existen palabras con el prefijo ingresado, de caso contrario se retorna una lista con todas las palabras existentes con el prefijo ingresado
+
+Pseudocodigo:
+
+Clase nodoTrie:
+
+palabrasPorPrefijo (NodoTrie<T> nodo, String palabraActual, Lista <String> resultado){
+
+    Si nodo.esFinDePalabra entonces
+        resultado.agregar(palabraActual)
+    FinSi
+    Para cada hijo de nodo hacer
+        palabrasPorPrefijo(hijo, palabraActual + hijo.caracter, resultado)
+    Fin Para
+}
+
+Lista<String> buscarPorPrefijo (String unPrefijo){
+    Lista<String> resultado <- nuevaLista
+    NodoTrie<T> nodoActual <- raiz.buscar(unPrefijo)
+    Si nodoActual es nulo entonces
+        devolver resultado
+    FinSi
+    palabrasPorPrefijo(nodoActual, unPrefijo, resultado)
+    devolver resultado
+}
+
+Clase Trie:
+
+Lista<String> buscarPorPrefijo(String unPrefijo){
+    Si unPrefijo no es nulo entonces
+        devolver raiz.palabrasPorPrefijo(unPrefijo)
+    Sino
+        devolver lista vacía
+    FinSi
+}
+
+
