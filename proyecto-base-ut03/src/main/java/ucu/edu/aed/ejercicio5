@@ -99,4 +99,114 @@ Lista<String> buscarPorPrefijo(String unPrefijo){
     FinSi
 }
 
+3.Insertar una palabra con un dato asociado
+//Seudocódigo
+Inserción en tries
+//En la clase NodoTrie<T>
+boolean insertar(String unaPalabra, T dato){
+    nodoActual <- this
+    Para cada caracter car de unaPalabra hacer
+        unHijo<- nodoActual.obtenerHijo(car)
+        si unHijo es nulo entonces
+            unHijo <- crear nuevo nodo trie
+            nodoActual.agregar(unHijo, car)
+        FinSi
+        nodoActual <- unHijo
+    FinPara
+    nodoActual.esFinDePalabra <- true
+    nodoActual.dato <- dato
+    devolver true
+}
+
+Clase trie:
+boolean insetrar (String unaPalabra, T dato){
+   Si (unaPalabra == null O unaPalabra.estaVacia() O dato == null) Entonces
+        devolver false
+    FinSi
+
+    Si (raiz es nulo) Entonces
+        raiz <- crear nuevo nodo trie
+    FinSi
+
+    devolver raiz.insertar(unaPalabra, dato)
+}
+
+//Lenguaje natural
+El método recibe una palabra con un dato, el cual va a ser utilizado para hacer consulta letra a letra. La idea es tomar una letra e ir consultando en los nodos hijos si se encuentra, si se encuentra se continua, en caso de que no se encuentre se crea el nodo vacio colocando los caracteres faltantes, para completar la inserción de la palabra. El recorrido siempre se hace de izquierda a derecha, para buscar cada caracter.
+
+//Pre y post condiciones del método insertar:
+
+Pre:
+- Los datos sean correctos "unaPalabra". No nula.
+- Que el nodo actual desde donde se empieza a buscar ya exista en el sistema.
+
+Post:
+-  unaPalabra queda almacenada en el Trie correctamente.
+- El ultimo nodo correspondiente al último carácter de la palabra queda marcado como fin de la palabra. (es el contiente el valor dato).
+- Se crearon únicamente los nodos para los caracteres nuevos, y se reutilizaron los ya existentes.
+- El método retorna true indicando que fue agregada.
+
+4. Eliminar una palabra del Trie
+
+//Seudocodigo
+boolean eliminar(String unaPalabra, int indice) {
+    // Caso base: Llegamos al nodo del último carácter
+    Si indice == unaPalabra.longitud() Entonces
+        // Si la palabra SÍ existe, la desmarcamos y vaciamos su dato
+        Si esFinDePalabra Entonces
+            esFinDePalabra <- false
+            dato <- null
+            devolver true // Confirmamos el éxito del desmarcado
+        FinSi
+
+        // Si no entró al "Si", significa que la palabra no existía
+        devolver false
+    FinSi
+
+    car <- unaPalabra.obtenerCaracter(indice)
+    unHijo <- this.obtenerHijo(car)
+
+    Si unHijo es nulo Entonces
+        devolver false // La palabra no existe en este camino
+    FinSi
+
+    // Guardamos si la palabra se logró eliminar más abajo
+    palabraEliminada <- unHijo.eliminar(unaPalabra, indice + 1)
+
+    // Si la palabra sí existía, evaluamos si debemos borrar físicamente al hijo
+    Si palabraEliminada Entonces
+        // Si el nodo tiene hijos O es fin de otra palabra, nos saltamos el borrado físico
+        Si unHijo.obtenerCantidadHijos() > 0 O unHijo.esFinDePalabra Entonces
+            devolver true
+        FinSi
+
+        // Si pasó el filtro anterior, es un nodo huérfano y es seguro borrarlo
+        this.removerHijo(car)
+        devolver true
+    FinSi
+
+    devolver false
+}
+
+Clase Trie
+boolean eliminar(String unaPalabra) {
+    Si (unaPalabra == null O raiz es nulo) Entonces
+        devolver false FinSi
+    FinSi
+
+    devolver raiz.eliminar(unaPalabra, 0)
+}
+
+
+//Lenguaje natural
+El método recibe una palabra a eliminar y luego de verificar de que el arbol contenga elementos, verifica que la palabra no sea nula. Allí comienza una recorrida de izquierda a derecha. En caso de que el proceso se detenga porque no se encuentra una letra retorna false. Al llegar al ultimo caracter de la palabra, lo desmarca como fin de la palabra, y le borra el dato retornando un true. Se evalua cada nodo, en el caso de que en el recorrido se encuentre que los nodos forman parte de otra palabra,se conservan para proteger los datos compartidos. En caso de que no, el padre elimina todos los nodos pertenecientes a esas letras.
+
+//Pre y post condiciones del método insertar:
+Pre
+- El nodo debe existir y su contenido
+
+Post:
+- Que se borren del sistema unicamente los nodos que pertenecen de forma exclusiva a la palabra eliminada.
+- Los nodos que forman parte de los prefijos de otras permanecen inactivos
+-La palabra es desmarcada logicamente del arbol y su dato asociado se elimina.
 
