@@ -1,18 +1,16 @@
 package ucu.edu.aed.medible.medibles;
 
-
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import ucu.edu.aed.medible.lib.Medible;
 
-public class MedicionBuscarLinkedList extends Medible<List<String>> {
+public class MedicionBuscarTreeMap extends Medible<List<String>> {
 
+    private final Map<String, String> map;
 
-    private final LinkedList<String> list;
-
-    public MedicionBuscarLinkedList(LinkedList<String> list) {
-        this.list = list;
+    public MedicionBuscarTreeMap(Map<String, String> map) {
+        this.map = map;
     }
 
     @Override
@@ -20,13 +18,13 @@ public class MedicionBuscarLinkedList extends Medible<List<String>> {
         for (int i = 0; i < repeticiones; i++) {
             for (String palabra : palabras) {
 
-                list.contains(palabra);
+                map.containsKey(palabra);
             }
         }
     }
 
     @Override
     public Object getObjetoAMedirMemoria() {
-        return this.list;
+        return this.map;
     }
 }

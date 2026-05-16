@@ -1,25 +1,34 @@
 package ucu.edu.aed.medible;
 
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
 import ucu.edu.aed.medible.lib.Medible;
 import ucu.edu.aed.medible.lib.Medicion;
+import ucu.edu.aed.medible.medibles.MedicionBuscarArrayList;
+import ucu.edu.aed.medible.medibles.MedicionBuscarHashMap;
 import ucu.edu.aed.medible.medibles.MedicionBuscarLinkedList;
+import ucu.edu.aed.medible.medibles.MedicionBuscarTreeMap;
+import ucu.edu.aed.medible.medibles.MedicionBuscarTrie;
 import ucu.edu.aed.tda.trie.TTrie;
-import ucu.edu.aed.tda.trie.impl.Trie;
+import ucu.edu.aed.tda.trie.TTrieHashMap;
 import ucu.edu.aed.utils.FileUtils;
-
-import java.util.*;
 
 public class Main {
 
-    private static final int REPETICIONES = 100;
+    private static final int REPETICIONES = 20;
 
     public static void main(String[] args) {
-        TTrie<String> trie = new Trie<>();
         LinkedList<String> linkedList = new LinkedList<>();
         ArrayList<String> arrayList = new ArrayList<>();
         Map<String, String> hashMap = new HashMap<>();
         Map<String, String> treeMap = new TreeMap<>();
+        TTrie<String> trie = new TTrieHashMap<>();
 
         List<String> palabrasParaAgregar = new LinkedList<>();
         List<String> palabrasParaBuscar = new LinkedList<>();
@@ -28,31 +37,23 @@ public class Main {
 
         for (String p : palabrasParaAgregar) {
             // insertar la palabra p en el trie
-            // TODO
+            trie.insertar(p, p);
             // insertar la palabra p en el linkedList
             linkedList.add(p);
             // insertar la palabra p en el arrayList
-//            arrayList.add(p);
+            arrayList.add(p);
             // insertar la palabra p en el hashMap
-            // TODO
+            hashMap.put(p, p);
             // insertar la palabra p en el treeMap
-            // TODO
+            treeMap.put(p, p);
         }
 
         List<Medible<List<String>>> medibles = new LinkedList<>();
         medibles.add(new MedicionBuscarLinkedList(linkedList));
-
-        // TODO implementar MedicionBuscarArrayList
-//        medibles.add(new MedicionBuscarArrayList(arrayList));
-
-        // TODO implementar MedicionBuscarTrie
-        // medibles.add(new MedicionBuscarTrie(trie));
-
-        // TODO implementar MedicionBuscarHashMap
-        // medibles.add(new MedicionBuscarHashMap(hashMap));
-
-        // TODO implementar MedicionBuscarTreeMap
-        // medibles.add(new MedicionBuscarTreeMap(treeMap));
+        medibles.add(new MedicionBuscarArrayList(arrayList));
+        medibles.add(new MedicionBuscarTrie(trie));
+        medibles.add(new MedicionBuscarHashMap(hashMap));
+        medibles.add(new MedicionBuscarTreeMap(treeMap));
 
         StringBuilder sb = new StringBuilder();
         sb.append("algoritmo,tiempo,memoria\n");
