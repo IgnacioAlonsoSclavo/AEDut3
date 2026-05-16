@@ -1,0 +1,212 @@
+1. Operación buscar palabra completa:
+Lenguaje natural:
+
+El método recibe una palabra y se inicializa un nodo auxiliar con el nodo actual this. Por cada carácter de la palabra, se verifica si existe un hijo con dicho carácter, en caso de que no exista, se devuelve nulo. Si existe, ese hijo pasa a ser el nodo actual. Al finalizar el recorrido, si el nodo actual es fin de palabra, se devuelve dicho nodo, sino se devuelve nulo.
+
+Precondiciones y Postcondiciones:
+
+Precondiciones:
+- Se debe ingresar una palabra, de tipo string.
+- La palabra no puede ser nula o vacia.
+- El Trie debe de existir
+
+Postcondiciones:
+-Se retorna nulo si algún carácter del camino no existe, o si la secuencia existe pero no es una palabra completa
+-Se retorna el nodo fin de palabra si la palabra existe completa en el Trie
+
+Pseudocodigo:
+
+Clase nodoTrie:
+
+NodoTrie<T> buscar (String unaPalabra){
+    nodoActual <- this
+    Para cada caracter car de unaPalabra hacer
+        unHijo <- nodoActual.obtenerHijo(car)
+        Si unHijo es nulo entonces
+            devolver nulo
+        Sino
+            nodoActual = unHijo
+        FinSi
+    FinPara
+    Si nodoActual.esFinDePalabra entonces
+        devolver nodoActual
+    Sino
+        devolver nulo
+    FinSi
+}
+
+Clase Trie:
+NodoTrie<T> buscar (String unaPalabra){
+    si unaPalabra != null{
+    devolver raiz.buscar(unaPalabra)}
+    sino devolver null;
+}
+
+La busqueda en Tries es de Orden:
+m = longitud de la palabra
+d = costo de obtener el hijo, que depende de la estructura utilizada.
+Si obtenerHijo tiene O(1) (Array o Hashmap) entonces la complejidad total tiene orden m.
+O(d*m)
+
+2. Obtener la lista de palabras por un prefijo dado:
+Lenguaje natural:
+El metodo recibe un prefijo de tipo String.
+Se busca el nodo que corresponde al último carácter del prefijo, si dicho nodo es nulo, se devuelve una lista vacia.
+En caso de que no sea nulo , se recorre recursivamente todos los subarboles a partir de ese nodo, añadiendo a la lista de todas las palabras que se encuentren completas.
+Finalmente se devuelve la lsita con todas las palabras compeltas.
+
+
+Precondiciones y Postcondiciones:
+
+Precondiciones:
+-El prefijo no puede ser nulo o vacio.
+
+
+Postcondiciones:
+-Se retorna una lista vacia si no existen palabras con el prefijo ingresado, de caso contrario se retorna una lista con todas las palabras existentes con el prefijo ingresado
+
+Pseudocodigo:
+
+Clase nodoTrie:
+
+palabrasPorPrefijo (NodoTrie<T> nodo, String palabraActual, Lista <String> resultado){
+
+    Si nodo.esFinDePalabra entonces
+        resultado.agregar(palabraActual)
+    FinSi
+    Para cada hijo de nodo hacer
+        palabrasPorPrefijo(hijo, palabraActual + hijo.caracter, resultado)
+    Fin Para
+}
+
+Lista<String> buscarPorPrefijo (String unPrefijo){
+    Lista<String> resultado <- nuevaLista
+    NodoTrie<T> nodoActual <- raiz.buscar(unPrefijo)
+    Si nodoActual es nulo entonces
+        devolver resultado
+    FinSi
+    palabrasPorPrefijo(nodoActual, unPrefijo, resultado)
+    devolver resultado
+}
+
+Clase Trie:
+
+Lista<String> buscarPorPrefijo(String unPrefijo){
+    Si unPrefijo no es nulo entonces
+        devolver raiz.palabrasPorPrefijo(unPrefijo)
+    Sino
+        devolver lista vacía
+    FinSi
+}
+
+3.Insertar una palabra con un dato asociado
+//Seudocódigo
+Inserción en tries
+//En la clase NodoTrie<T>
+boolean insertar(String unaPalabra, T dato){
+    nodoActual <- this
+    Para cada caracter car de unaPalabra hacer
+        unHijo<- nodoActual.obtenerHijo(car)
+        si unHijo es nulo entonces
+            unHijo <- crear nuevo nodo trie
+            nodoActual.agregar(unHijo, car)
+        FinSi
+        nodoActual <- unHijo
+    FinPara
+    nodoActual.esFinDePalabra <- true
+    nodoActual.dato <- dato
+    devolver true
+}
+
+Clase trie:
+boolean insetrar (String unaPalabra, T dato){
+   Si (unaPalabra == null O unaPalabra.estaVacia() O dato == null) Entonces
+        devolver false
+    FinSi
+
+    Si (raiz es nulo) Entonces
+        raiz <- crear nuevo nodo trie
+    FinSi
+
+    devolver raiz.insertar(unaPalabra, dato)
+}
+
+//Lenguaje natural
+El método recibe una palabra con un dato, el cual va a ser utilizado para hacer consulta letra a letra. La idea es tomar una letra e ir consultando en los nodos hijos si se encuentra, si se encuentra se continua, en caso de que no se encuentre se crea el nodo vacio colocando los caracteres faltantes, para completar la inserción de la palabra. El recorrido siempre se hace de izquierda a derecha, para buscar cada caracter.
+
+//Pre y post condiciones del método insertar:
+
+Pre:
+- Los datos sean correctos "unaPalabra". No nula.
+- Que el nodo actual desde donde se empieza a buscar ya exista en el sistema.
+
+Post:
+-  unaPalabra queda almacenada en el Trie correctamente.
+- El ultimo nodo correspondiente al último carácter de la palabra queda marcado como fin de la palabra. (es el contiente el valor dato).
+- Se crearon únicamente los nodos para los caracteres nuevos, y se reutilizaron los ya existentes.
+- El método retorna true indicando que fue agregada.
+
+4. Eliminar una palabra del Trie
+
+//Seudocodigo
+boolean eliminar(String unaPalabra, int indice) {
+    // Caso base: Llegamos al nodo del último carácter
+    Si indice == unaPalabra.longitud() Entonces
+        // Si la palabra SÍ existe, la desmarcamos y vaciamos su dato
+        Si esFinDePalabra Entonces
+            esFinDePalabra <- false
+            dato <- null
+            devolver true // Confirmamos el éxito del desmarcado
+        FinSi
+
+        // Si no entró al "Si", significa que la palabra no existía
+        devolver false
+    FinSi
+
+    car <- unaPalabra.obtenerCaracter(indice)
+    unHijo <- this.obtenerHijo(car)
+
+    Si unHijo es nulo Entonces
+        devolver false // La palabra no existe en este camino
+    FinSi
+
+    // Guardamos si la palabra se logró eliminar más abajo
+    palabraEliminada <- unHijo.eliminar(unaPalabra, indice + 1)
+
+    // Si la palabra sí existía, evaluamos si debemos borrar físicamente al hijo
+    Si palabraEliminada Entonces
+        // Si el nodo tiene hijos O es fin de otra palabra, nos saltamos el borrado físico
+        Si unHijo.obtenerCantidadHijos() > 0 O unHijo.esFinDePalabra Entonces
+            devolver true
+        FinSi
+
+        // Si pasó el filtro anterior, es un nodo huérfano y es seguro borrarlo
+        this.removerHijo(car)
+        devolver true
+    FinSi
+
+    devolver false
+}
+
+Clase Trie
+boolean eliminar(String unaPalabra) {
+    Si (unaPalabra == null O raiz es nulo) Entonces
+        devolver false FinSi
+    FinSi
+
+    devolver raiz.eliminar(unaPalabra, 0)
+}
+
+
+//Lenguaje natural
+El método recibe una palabra a eliminar y luego de verificar de que el arbol contenga elementos, verifica que la palabra no sea nula. Allí comienza una recorrida de izquierda a derecha. En caso de que el proceso se detenga porque no se encuentra una letra retorna false. Al llegar al ultimo caracter de la palabra, lo desmarca como fin de la palabra, y le borra el dato retornando un true. Se evalua cada nodo, en el caso de que en el recorrido se encuentre que los nodos forman parte de otra palabra,se conservan para proteger los datos compartidos. En caso de que no, el padre elimina todos los nodos pertenecientes a esas letras.
+
+//Pre y post condiciones del método insertar:
+Pre
+- El nodo debe existir y su contenido
+
+Post:
+- Que se borren del sistema unicamente los nodos que pertenecen de forma exclusiva a la palabra eliminada.
+- Los nodos que forman parte de los prefijos de otras permanecen inactivos
+-La palabra es desmarcada logicamente del arbol y su dato asociado se elimina.
+

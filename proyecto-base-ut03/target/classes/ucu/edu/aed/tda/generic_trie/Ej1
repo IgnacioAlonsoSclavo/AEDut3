@@ -1,0 +1,62 @@
+Desarrollar en seudocódigo el siguiente algoritmo, con las firmas dadas:
+Buscar(Comparable<T>criterio): devuelve el nodo que satisface el criterio; en caso contrario devuelve el nodo nulo.
+
+En cada uno de los casos debe escribirse el método del árbol y el método del nodo.
+1. Descripción en lenguaje natural del algoritmo solicitado.
+2. Identificación de precondiciones y postcondiciones correspondientes.
+3. Escritura del algoritmo en seudocódigo formal.
+4. Análisis detallado del orden del tiempo de ejecución del algoritmo.
+5. Ilustrar el funcionamiento del algoritmo buscando divisiones / departamentos que existan
+y que no existan.
+6. Calcular la cantidad de comparaciones en cada caso.
+7. Hallar el orden del tiempo de ejecución de cada algoritmo escrito.
+
+(el recorrido es en preorder)
+1. Buscar(Comparable<T>criterio):
+Método que recibe un criterio, compara el criterio con sus hijos (obtenerHijos), si lo satisface
+ entra en el nodo "hijo", si no lo satisface, entra en el nodo "hermano derecho",
+ esto lo repite recursivamente hasta completar el criterio de busqueda.
+ En caso de que no se logre cumplir el criterio, debería retornar null.
+
+ precondiciones:
+ - Se debe buscar un dato que no sea vacio
+
+ poscondiciones:
+ - Si se satisface el criterio se retorna el nodo
+ - Si no se satisface el criterio se retorna null
+
+Pseudocódigo:
+Metodo buscar(Comparable<T>criterio) en Arbol:
+Inicio
+    si raiz != null entonces
+        retornar raiz.buscarEnNodo(criterio)<s
+    sino
+            return null
+    fin si
+Fin metodo
+
+
+Pseudocódigo:
+Metodo buscar(Comparable<T>criterio) en Nodo:
+Inicio
+    si this.dato.compareTo(criterio) == 0
+        return this
+    fin si
+
+    si primerHijo != null do
+        resultado = primerHijo.buscar(criterio)
+            si resultado != null
+                retornar resultado
+            fin si
+    fin si
+
+    si hermanoDerecho != null entonces
+        retornar hermanoDerecho.buscar(critero)
+    fin si
+
+    retornar null
+Fin metodo
+
+
+
+
